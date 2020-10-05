@@ -22,7 +22,7 @@ const {
  7. [Transducers](#transducers)
 
 # [a]synchrony
-**Stop worrying about async** - you can pass synchronous or asynchronous functions to any rubico method, hence the `[a]` (optionally asynchronous). All rubico methods handle promise resolution for you, meaning you can run things in parallel without having to call `Promise.all`. More on this behavior [here](https://dev.to/richytong/rubico-a-synchrnous-functional-syntax-motivation-20hf).
+**Stop worrying about async**. Pass synchronous or asynchronous functions to any rubico method. All rubico methods handle promise resolution for you, meaning you can run things in parallel without having to call `Promise.all`. More on this behavior [here](https://dev.to/richytong/rubico-a-synchrnous-functional-syntax-motivation-20hf).
 
 ```javascript [playground]
 const getTodo = id => fetch('https://jsonplaceholder.typicode.com/todos/' + id)
@@ -35,7 +35,7 @@ map(pipe([
 ```
 
 # Function Composition
-**Reduce code complexity** by chaining functions together with `pipe`. You can think about `pipe` as an analog to the Unix pipe, though with JavaScript functions instead of command line utilities. Enjoy less bugs, more code reuse, and easier maintenance by composing your application as a combination of smaller components via `pipe`.
+**Reduce code complexity with pipelines** created by `pipe`. You can think about `pipe` as an analog to the Unix pipe, though with JavaScript functions instead of command line utilities. Enjoy less bugs, more code reuse, and easier maintenance by composing your application as a pipeline of smaller components.
 
 ```javascript [playground]
 const square = number => number ** 2
@@ -44,7 +44,7 @@ const isOdd = number => number % 2 === 1
 
 const add = (a, b) => a + b
 
-const squaredOdds = pipe([
+const squaredOddsPipeline = pipe([
   filter(isOdd),
   map(square),
   // reduce(add), // try uncommenting this reducing function
@@ -53,11 +53,11 @@ const squaredOdds = pipe([
 const numbers = [1, 2, 3, 4, 5]
 
 console.log('input:', numbers) // [1, 2, 3, 4, 5]
-console.log('output:', squaredOdds(numbers)) // [1, 9, 25]
+console.log('output:', squaredOddsPipeline(numbers)) // [1, 9, 25]
 ```
 
 # Object Composition
-**Declaratively massage object shape** to fit the next function in your pipeline. There may be times when you'll want to extend an object with new properties, or construct a new object from an existing one. For times like these, use the property accessor function `get` in conjunction with object composers `fork` or `assign`.
+**Compose objects in pipelines**. Use object composers `fork` and `assign` with property accessor `get` to encompass a full range of object operations inside pipelines. The result is a high level image of your application and its data flow.
 
 ```javascript [playground]
 const identity = value => value
@@ -92,7 +92,7 @@ console.log('maths on 3:', doMaths(3)) // { original: 3, doubled: 6, squared: 9 
 ```
 
 # Polymorphism
-**Act on any collection** - in addition to arrays, you can use `map` to transform async iterables, strings, sets, maps, binary arrays, and object values. This concept applies generally to any function of rubico; if a transformation + data structure pairing makes sense by math, it should be supported.
+**Reuse code across arrays and asynchronous streams**. Use `map`, `filter`, `reduce`, `transform`,  or `flatMap` to transform async iterables, strings, sets, maps, binary arrays, and object values. This concept applies generally to any function of rubico; if a transformation + data structure pairing makes sense by math, it should be supported.
 
 ```javascript [playground]
 const square = number => number ** 2
@@ -167,7 +167,7 @@ console.log(
 ```
 
 # Transducers
-**Wrangle large or infinite streams of data** with rubico's transducers. Create transducers via the transformation functions `map`, `filter`, or `flatMap`, then consume them with `reduce` or `transform`. Additionally, transducers created with rubico can act on asynchronous data streams or operate asynchronously. More on this behavior [here](https://github.com/a-synchronous/rubico/blob/master/TRANSDUCERS.md).
+**Wrangle large or infinite streams of data** with rubico's transducers. Create transducers via the transformation functions `map`, `filter`, or `flatMap`, then consume them with `reduce` or `transform`. Additionally, transducers created with rubico can act on asynchronous data streams or operate asynchronously. More on this behavior [here](https://rubico.land/blog/2020/10/02/transducers-crash-course).
 
 ```javascript [playground]
 // length number => string => Generator<string>
