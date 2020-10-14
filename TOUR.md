@@ -2,12 +2,13 @@ Welcome to the rubico tour. This tour covers high level concepts and provides ru
 
 ```javascript [theme=default]
 const {
-  pipe, fork, assign,
-  tap, tryCatch, switchCase,
+  pipe, tap,
+  switchCase, tryCatch,
+  fork, assign, get, pick, omit,
   map, filter, reduce, transform, flatMap,
-  any, all, and, or, not,
+  and, or, not, any, all,
   eq, gt, lt, gte, lte,
-  get, pick, omit,
+  // thunkify, curry, __, // coming soon
 } = rubico // available globally
 ```
 
