@@ -59,7 +59,7 @@ A `Transducer` is a function that takes a `Reducer` and returns another `Reducer
 
 <br />
 
-Since the reducer that sets off a pipeline of transducers is called last, `pipe` behaves as `compose` and chains functions in reverse when a reducer is passed in data position. This decision is purly for API, and allows for all function pipelines created with `pipe`, even those of transducers, to read left to right.
+Since the reducer that sets off a pipeline of transducers is called last, `pipe` behaves as `compose` and chains functions in reverse when a reducer is passed in data position. This decision is purely for API, and allows for all function pipelines created with `pipe`, even those of transducers, to read left to right.
 
 The following operators are the core building blocks of rubico's transducer API. It is possible to perform the full spectrum of tranducer transformations with just these.
 
