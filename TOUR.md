@@ -8,89 +8,61 @@ const {
   map, filter, reduce, transform, flatMap,
   and, or, not, any, all,
   eq, gt, lt, gte, lte,
-  // thunkify, curry, __, // coming soon
+  thunkify, always,
+  curry, __,
 } = rubico // available globally
 ```
 
 # Table of Contents
 
  1. [[a]synchrony](#a-synchrony)
- 2. [Function Composition](#function-composition)
- 3. [Object Composition](#object-composition)
- 4. [Polymorphism](#polymorphism)
- 5. [Control Flow](#control-flow)
- 6. [Error Handling](#error-handling)
- 7. [Transducers](#transducers)
+ 2. [Composition](#composition)
+ 3. [Polymorphism](#polymorphism)
+ 4. [Control Flow](#control-flow)
+ 5. [Error Handling](#error-handling)
+ 6. [Transducers](#transducers)
 
 # [a]synchrony
-**Stop worrying about async**. Pass synchronous or asynchronous functions to any rubico method. All rubico methods handle promise resolution for you, meaning you can run things in parallel without having to call `Promise.all`. More on this behavior [here](https://dev.to/richytong/rubico-a-synchrnous-functional-syntax-motivation-20hf).
+**Stop worrying about async**. Pass synchronous or asynchronous functions to any rubico operator - all promises are resolved for their promised value before continuing. Run things in parallel without having to call `Promise.all` on `someArray.map(...)`. For more on this behavior, see this [blog post](https://dev.to/richytong/rubico-a-synchrnous-functional-syntax-motivation-20hf).
 
 ```javascript [playground]
-const getTodo = id => fetch('https://jsonplaceholder.typicode.com/todos/' + id)
+const getTodo = id => fetch(`https://jsonplaceholder.typicode.com/todos/${id}`)
 
 map(pipe([
   getTodo,
   res => res.json(),
   console.log,
-]))([1, 2, 3, 4, 5]) // try adding a 6
+]))([1, 2, 3, 4, 5])
 ```
 
-# Function Composition
-**Reduce code complexity with pipelines** created by `pipe`. You can think about `pipe` as an analog to the Unix pipe, though with JavaScript functions instead of command line utilities. Enjoy less bugs, more code reuse, and easier maintenance by composing your application as a pipeline of smaller components.
+Press the `run` button to make five requests using `fetch`, parse five request bodies, and log five todos out to the console - all in parallel.
 
-```javascript [playground]
-const square = number => number ** 2
-
-const isOdd = number => number % 2 === 1
-
-const add = (a, b) => a + b
-
-const squaredOddsPipeline = pipe([
-  filter(isOdd),
-  map(square),
-  // reduce(add), // try uncommenting this reducing function
-])
-
-const numbers = [1, 2, 3, 4, 5]
-
-console.log('input:', numbers) // [1, 2, 3, 4, 5]
-console.log('output:', squaredOddsPipeline(numbers)) // [1, 9, 25]
-```
-
-# Object Composition
-**Compose objects in pipelines**. Use object composers `fork` and `assign` with property accessor `get` to encompass a full range of object operations inside pipelines. The result is a high level image of your application and its data flow.
+# Composition
+**Reduce coupling and complexity**. Use rubico's operators to create compositions of small, reusable functions. Add functionality to your program by composing the desired function - rubico gives you the tools to make this as simple and seamless as possible.
 
 ```javascript [playground]
 const identity = value => value
 
 const square = number => number ** 2
 
-const double = number => number * 2
-
-const add = (a, b) => a + b
-
-const doMaths = pipe([
+const doMathsWithLogs = pipe([
+  tap(number => console.log('input:', number)),
   fork({
-    original: identity,
-    doubled: double,
-    squared: square,
-  }),
-  /* try uncommenting this assignment
-  assign({
-    total: pipe([
-      fork([
-        get('original'),
-        get('doubled'),
-        get('squared'),
-      ]),
-      reduce(add),
+    number: identity,
+    numberSquared: pipe([
+      square,
+      tap(curry.arity(2, console.log, 'result of square:', __)),
     ]),
   }),
-  */
 ])
 
-console.log('maths on 3:', doMaths(3)) // { original: 3, doubled: 6, squared: 9 }
+console.log(doMathsWithLogs(3))
+// input: 3
+// result of square: 9
+// { number: 3, numberSquared: 9 }
 ```
+
+The `run` button above executes the pipeline `doMathsWithLogs` that logs a number out to the console, then parallelizes its identity operation and another pipeline into an object `{ number, numberSquared }`. The above example also introduces rubico's `curry` and placeholder `__`; use these to compose any function by creating a partially applied variant suited for the task at hand.
 
 # Polymorphism
 **Reuse code across arrays and asynchronous streams**. Use `map`, `filter`, `reduce`, `transform`,  or `flatMap` to transform async iterables, strings, sets, maps, binary arrays, and object values. This concept applies generally to any function of rubico; if a transformation + data structure pairing makes sense by math, it should be supported.
@@ -200,4 +172,4 @@ console.log(
 ) // CCGGAAGFFEEDDCGGFFEEDGGFFEEDCCGGAAGFFEEDDC
 ```
 
-That concludes the rubico tour. From here, you could get started with rubico in a project ([installation](/#installation)) or read more at the [docs](/docs).
+You've arrived at the end of the tour. From here, you could get started with rubico in a project ([installation](/#installation)) or read more at the [docs](/docs).
