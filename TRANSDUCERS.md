@@ -96,7 +96,7 @@ console.log(
 ) // [1, 9, 25, 36, 49, ...]
 ```
 
-Due to rubico's polymorphic nature, any transducer not used in a reduce implementation is capable of eager transforomations. Below is an eager version of the above transformation.
+Due to rubico's polymorphic nature, any transducer not used in a reduce implementation is capable of eager transformations. Below is an eager version of the above transformation.
 
 ```javascript [playground]
 const square = number => number ** 2
