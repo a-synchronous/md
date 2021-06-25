@@ -124,7 +124,7 @@ cli(['???']) // USAGE: ...
 ```
 
 # Error Handling
-**Handle errors with functions** - a `tryer` and a `catcher`. The `tryer` is tried, while the `catcher` catches any errors thrown or Promises rejected.
+**Handle errors with functions** - a `tryer` and a `catcher`. The `tryer` is tried, while the `catcher` catches any errors thrown or Promises rejected. You can use a single error handler with `tryCatch` to catch all errors thrown by sync or async functions including promise rejections in a `pipe`.
 
 ```javascript [playground]
 console.log(
