@@ -4,7 +4,7 @@ Welcome to the Rubico tour. This tour covers high level concepts and provides ru
 const {
   pipe, tap,
   switchCase, tryCatch,
-  fork, assign, get, pick, omit,
+  fork, assign, get, set, pick, omit,
   map, filter, reduce, transform, flatMap,
   and, or, not, any, all,
   eq, gt, lt, gte, lte,
